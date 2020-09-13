@@ -1,14 +1,31 @@
-const http = require('http');
+const express = require('express')
+const app = express()
+const port = 3000
 
-const hostname = '127.0.0.1';
-const port = 3000;
+app.get('/', (req, res) => {
+    res.send('Hello World!')
+})
 
-const server = http.createServer((req, res) => {
-  res.statusCode = 200;
-  res.setHeader('Content-Type', 'text/plain');
-  res.end('Hello World');
-});
+app.get('/product', (req, res) => {
+    res.send('Rota para buscar todos os produtos')
+})
+   
+app.get('/product/:id', (req, res) => {
+    res.send('Rota para buscar o produto '+ req.params.id)
+})
+   
+app.post('/product', (req, res) => {
+    res.send('Rota para incluir um produto')
+})
+   
+app.put('/product/:id', (req, res) => {
+    res.send('Rota para alterar o produto '+ req.params.id)
+})
+   
+app.delete('/product/:id', (req, res) => {
+    res.send('Rota para apagar o produto '+ req.params.id)
+})
 
-server.listen(port, hostname, () => {
-  console.log(`Server running at http://${hostname}:${port}/`);
-});
+app.listen(port, () => {
+    console.log(`Iniciando o servidor: http://localhost:${port}`)
+})

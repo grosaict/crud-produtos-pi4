@@ -7,8 +7,11 @@ mongoose.Promise = global.Promise;
 const ProductSchema = new Schema({
     name: String,
     price: Number
-}, { versionKey: false
-}, { collection: 'productCollection'
+}, {
+    //O que faz essa linha?
+    //versionKey: false
+    //Só funcionou depois que substitui pela linha abaixo
+    collection: 'productCollection'
 });
 
-module.exports = mongoose.model("Product", ProductSchema);
+module.exports = mongoose.model("productSchema", ProductSchema);

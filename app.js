@@ -9,9 +9,8 @@ app.use(express.json()) // for parsing application/json
 app.use(express.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
 
 //Mongoose Configuration
-
-//Nessa linha deve estar a pasta db_files ou a collection!?
-mongoose.connect('mongodb://localhost:27017/db_files', {
+//Use data base name at this line
+mongoose.connect('mongodb://localhost:27017/app_products', {
     useNewUrlParser: true, 
     useUnifiedTopology: true,
     useFindAndModify: false

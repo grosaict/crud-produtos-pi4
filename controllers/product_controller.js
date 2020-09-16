@@ -1,78 +1,50 @@
 const Product = require('../models/product')
 
-/* exports.list = (req, res) => {
-    let products = new Object();
-    products = [
-        {id:1, name:"Produto A", price:30000},
-        {id:2, name:"Produto B", price:25000},
-        {id:3, name:"Produto C", price:30600}
-    ]
-    res.json(products)
-} */
-
 exports.list = (req, res) => {
-    Product.find({},(err, products) => {
+    Product.find({},(err, Product) => {
         if(err){
             res.status(500).send(err);
         }
-        res.json(products);
+        res.json(Product);
     });
 }
 
 exports.getById = (req, res) => {  
-    //res.json({id:req.params.id, name:"Produto X", price:22000})
-    if(req.params.id == 1){
-        let product = new Object();
-        product.id = req.params.id;
-        product.name = 'Produto X';
-        product.price = 22000;
+    let id = req.params.id;
+    Product.findById(id, (err, product) => {
+        if(err)
+            res.status(500).send(err);        
         res.json(product);
-    }
-    else {
-        res.sendStatus(404);
-    }
+    });
 }
    
 exports.insert = (req, res) => {
-    /*  To send simple request use: 
-            res.json(req.body)
-
-        Object example to use in Postman:
-        {
-            "name":     "Produto A",
-            "price":    1000
+    let newProduct = new Product(req.body);
+    newProduct.save((err, product) => {
+        if(err) {
+            res.send(err);
         }
-    res.json({id:1, name:req.body.name, price:req.body.price})*/
-    let product = new Object();
-        product.id = 1;
-        product.name = req.body.name;
-        product.price = req.body.price;
-    res.status(201).json(product);
+        res.status(201).json(product);
+    });
 }
    
 exports.update = (req, res) => {
-    //res.json({id:req.params.id, name:"Produto X", price:22000})
-    if(req.params.id == 2){
-        let product = req.body;
-        product.id = req.params.id;
-        product.price += 22000;
-        res.json(product);
-    }
-    else {
-        res.sendStatus(404);
-    }
+    let id = req.params.id;
+    let productToUpdate = req.body;
+    Product.findOneAndUpdate({ _id: id }, productToUpdate, { new: true }, (err, productUpdated) => {
+        if(err){
+            res.send(err);
+        }
+        res.json(productUpdated);
+    });
 }
    
 exports.delete = (req, res) => {
-    //res.json({id:req.params.id, name:"Produto X", price:22000})
-    if(req.params.id == 3){
-        let product = new Object();
-        product.id = req.params.id;
-        product.name = 'Produto X';
-        product.price = 22000;
-        res.json(product);
-    }
-    else {
-        res.sendStatus(404);
-    }
+    let id = req.params.id;
+    Product.findOneAndDelete({ _id: id }, (err, productToDelete) => {
+        if(err){
+            res.send(err);
+        }
+        res.json(productToDelete);
+    });
 }

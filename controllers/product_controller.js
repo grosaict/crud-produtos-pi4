@@ -1,4 +1,6 @@
-exports.list = (req, res) => {
+const Product = require('../models/product')
+
+/* exports.list = (req, res) => {
     let products = new Object();
     products = [
         {id:1, name:"Produto A", price:30000},
@@ -6,6 +8,15 @@ exports.list = (req, res) => {
         {id:3, name:"Produto C", price:30600}
     ]
     res.json(products)
+} */
+
+exports.list = (req, res) => {
+    Product.find({},(err, products) => {
+        if(err){
+            res.status(500).send(err);
+        }
+        res.json(products);
+    });
 }
 
 exports.getById = (req, res) => {  

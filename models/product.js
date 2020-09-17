@@ -8,7 +8,7 @@ const ProductSchema = new Schema({
     name: String,
     price: Number
 }, {
-    //O que faz essa linha?
+    //O que faz essa linha?    <<<<<<<<<<<<<<<<<<
     //versionKey: false
     //Só funcionou depois que substitui pela linha abaixo
     collection: 'productCollection'

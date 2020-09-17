@@ -9,8 +9,7 @@ app.use(express.json()) // for parsing application/json
 app.use(express.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
 
 //Mongoose Configuration
-//Use data base name at this line
-mongoose.connect('mongodb://localhost:27017/app_products', {
+mongoose.connect('mongodb://localhost:27017/app_products', { //Use data base name at this line
     useNewUrlParser: true, 
     useUnifiedTopology: true,
     useFindAndModify: false
@@ -22,8 +21,14 @@ mongoose.connect('mongodb://localhost:27017/app_products', {
   });
 mongoose.Promise = global.Promise;
 
-//creates a route base for product
-app.use('/api/product', productRoute)
+//Middleware for Log
+app.use((req, resp, next) => {
+  console.log("Request Time: "+Date.now());
+  console.log("Method: "+ req.method)
+  next();
+});
+
+app.use('/api/product', productRoute) //creates a route base for product
 
 app.listen(port, () => {
     console.log(`Iniciando o servidor: http://localhost:${port}`)

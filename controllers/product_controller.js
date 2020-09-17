@@ -17,7 +17,20 @@ exports.getById = (req, res) => {
         res.json(product);
     });
 }
-   
+
+//Is not working <<<<<<<<<<<<<<<<<<
+exports.getByName = (req, res, next) => {
+    if (req.query && req.query.name){
+        const paramName = req.query.name;
+        Produto.find({name: paramName}, (err, products) => {
+            if(err){
+                res.status(500).send(err);
+            }
+            res.json(products);
+        });
+    }
+}
+
 exports.insert = (req, res) => {
     let newProduct = new Product(req.body);
     newProduct.save((err, product) => {

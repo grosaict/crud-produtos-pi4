@@ -1,12 +1,11 @@
-
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 mongoose.Promise = global.Promise;
 
 const ProductSchema = new Schema({
-    name: String,
-    price: Number
+    name:   String,
+    price:  Number
 }, {
     //O que faz essa linha?    <<<<<<<<<<<<<<<<<<
     //versionKey: false

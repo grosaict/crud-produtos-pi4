@@ -22,7 +22,7 @@ exports.getById = (req, res) => {
 exports.getByName = (req, res, next) => {
     if (req.query && req.query.name){
         const paramName = req.query.name;
-        Produto.find({name: paramName}, (err, products) => {
+        Product.find({name: paramName}, (err, products) => {
             if(err){
                 res.status(500).send(err);
             }

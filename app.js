@@ -4,13 +4,14 @@ const mongoose = require('mongoose') //import mongoose
 const port = 3000 //define application port
 
 const productRoute  = require('./routes/product_routes') //import routes of product
-const userRoute     = require('./routes/user_routes') //import routes of user
+const userRoute     = require('./routes/user_routes') //import routes of user to check token
+const userController = require('./controllers/user_controller') //import user controller
 
 app.use(express.json()) // for parsing application/json
 app.use(express.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
 
 //Mongoose Configuration
-mongoose.connect('mongodb://localhost:27017/app_products', { //Use data base name at this line
+mongoose.connect('mongodb://localhost/app_products', { //Use data base name at this line
     useNewUrlParser: true, 
     useUnifiedTopology: true,
     useFindAndModify: false
@@ -29,7 +30,7 @@ app.use((req, resp, next) => {
   next();
 });
 
-app.use('/api/product', productRoute) //creates a route base for product
+app.use('/api/product', userController.tokenCheck, productRoute) //creates a route base for product
 app.use('/api/user',    userRoute) //creates a route base for user
 
 app.listen(port, () => {

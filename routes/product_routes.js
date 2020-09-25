@@ -6,7 +6,7 @@ const router = express.Router() //creates const for use function Router()
 const controller = require('../controllers/product_controller')
 
 router.get      ('/',       controller.list)
-router.get      ('/search', controller.getByName); //new function
+router.get      ('/search', controller.getByName);
 router.get      ('/:id',    controller.getById)
 router.post     ('/',       controller.insert)
 router.put      ('/:id',    controller.update)

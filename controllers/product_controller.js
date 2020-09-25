@@ -18,10 +18,10 @@ exports.getById = (req, res) => {
     });
 }
 
-//Is not working <<<<<<<<<<<<<<<<<<
 exports.getByName = (req, res, next) => {
     if (req.query && req.query.name){
         const paramName = req.query.name;
+        console.log(paramName);
         Product.find({name: paramName}, (err, products) => {
             if(err){
                 res.status(500).send(err);

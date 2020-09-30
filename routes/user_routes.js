@@ -9,7 +9,6 @@ router.get      ('/',       controller.list)
 router.get      ('/search', controller.getByUserName);
 router.get      ('/:id',    controller.getById)
 router.post     ('/',       controller.insert)
-router.post     ('/auth',   controller.userCheck);
 router.put      ('/:id',    controller.update)
 router.delete   ('/:id',    controller.delete)
 

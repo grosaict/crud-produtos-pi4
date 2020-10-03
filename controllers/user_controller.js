@@ -16,8 +16,9 @@ exports.getById = (req, res) => {
     let id = req.params.id;
     User.findById(id, (err, user) => {
         if(err){
+            err.teamMsg = "Usuário não encontrado";
             res.status(500).send(err);
-        }    
+        }
         res.status(202).json(user); //is correct use http 202 in this case??
     });
 }

@@ -3,9 +3,10 @@ const app = express() //creates const for use express
 const mongoose = require('mongoose') //import mongoose
 const port = 3000 //define application port
 
+const tokenRoute      = require('./routes/token_routes') //import routes of token
 const productRoute    = require('./routes/product_routes') //import routes of product
-const userRoute       = require('./routes/user_routes') //import routes of user to check token
-const tokenRoute      = require('./routes/token_routes') //import routes of token to check token
+const userRoute       = require('./routes/user_routes') //import routes of user
+const cartRoute       = require('./routes/cart_routes') //import routes of cart
 
 const tokenController = require('./controllers/token_controller') //import user controller
 
@@ -32,9 +33,10 @@ app.use((req, resp, next) => {
   next();
 });
 
+app.use('/api/auth',    tokenRoute) //creates a route base for token
 app.use('/api/product', tokenController.tokenCheck, productRoute) //creates a route base for product
 app.use('/api/user',    tokenController.tokenCheck, userRoute) //creates a route base for user
-app.use('/api/auth',    tokenRoute) //creates a route base for token
+app.use('/api/cart',    tokenController.tokenCheck, cartRoute) //creates a route base for cart
 
 app.listen(port, () => {
     console.log(`Iniciando o servidor: http://localhost:${port}`)

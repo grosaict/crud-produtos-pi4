@@ -33,7 +33,7 @@ exports.tokenGenerator = (req, res, next) => {
                 if(checked){
                     const token = jwt.sign({
                         id: user.id
-                    }, 'Sen@cr5', {expiresIn: 60}); // Eg: 60, "2 days", "10h", "7d". A numeric value is interpreted as a seconds count. If you use a string be sure you provide the time units (days, hours, etc), otherwise milliseconds unit is used by default ("120" is equal to "120ms").
+                    }, 'MySecretCode', {expiresIn: "1h"}); // Eg: 60, "2 days", "10h", "7d". A numeric value is interpreted as a seconds count. If you use a string be sure you provide the time units (days, hours, etc), otherwise milliseconds unit is used by default ("120" is equal to "120ms").
                     res.status(201).send({"token":token});
                 }
                 else {
@@ -53,7 +53,7 @@ exports.tokenCheck = (req, res, next) => {
         res.status(401).send("Token de acesso inexistente");
     }
     else {
-        jwt.verify(token,'Sen@cr5',(err, userId) =>{
+        jwt.verify(token,'MySecretCode',(err, userId) =>{
             if(err){
                 res.status(401).send("Token de acesso inválido ou expirado");
             }

@@ -8,7 +8,7 @@ exports.list = (req, res) => {
         if(err){
             res.status(500).send(err);
         }
-        res.status(202).json(user); //is correct use http 202 in this case??
+        res.status(200).json(user);
     });
 }
 
@@ -19,7 +19,7 @@ exports.getById = (req, res) => {
             err.teamMsg = "Usuário não encontrado";
             res.status(500).send(err);
         }
-        res.status(202).json(user); //is correct use http 202 in this case??
+        res.status(200).json(user);
     });
 }
 
@@ -30,7 +30,7 @@ exports.getByUserName = (req, res, next) => {
             if(err){
                 res.status(500).send(err);
             }
-            res.status(202).json(users);  //is correct use http 202 in this case??
+            res.status(200).json(users);
         });
     }
 }
@@ -62,7 +62,7 @@ exports.update = (req, res) => {
         if(err){
             res.status(500).send(err);
         }
-        res.status(202).json(userUpdated); //is correct use http 202 in this case??
+        res.status(200).json(userUpdated);
     });
 }
    
@@ -72,6 +72,6 @@ exports.delete = (req, res) => {
         if(err){
             res.status(500).send(err);
         }
-        res.status(202).json(userToDelete); //is correct use http 202 in this case??
+        res.status(200).json(userToDelete);
     });
 }

@@ -5,7 +5,7 @@ exports.list = (req, res) => {
         if(err){
             res.status(500).send(err);
         }
-        res.json(Product);
+        res.status(200).json(Product);
     });
 }
 
@@ -14,7 +14,7 @@ exports.getById = (req, res) => {
     Product.findById(id, (err, product) => {
         if(err)
             res.status(500).send(err);        
-        res.json(product);
+        res.status(200).json(product);
     });
 }
 
@@ -26,7 +26,7 @@ exports.getByName = (req, res, next) => {
             if(err){
                 res.status(500).send(err);
             }
-            res.json(products);
+            res.status(200).json(products);
         });
     }
 }
@@ -35,7 +35,7 @@ exports.insert = (req, res) => {
     let newProduct = new Product(req.body);
     newProduct.save((err, product) => {
         if(err) {
-            res.send(err);
+            res.status(500).send(err);
         }
         res.status(201).json(product);
     });
@@ -46,9 +46,9 @@ exports.update = (req, res) => {
     let productToUpdate = req.body;
     Product.findOneAndUpdate({ _id: id }, productToUpdate, { new: true }, (err, productUpdated) => {
         if(err){
-            res.send(err);
+            res.status(500).send(err);
         }
-        res.json(productUpdated);
+        res.status(201).json(productUpdated);
     });
 }
    
@@ -56,8 +56,8 @@ exports.delete = (req, res) => {
     let id = req.params.id;
     Product.findOneAndDelete({ _id: id }, (err, productToDelete) => {
         if(err){
-            res.send(err);
+            res.status(500).send(err);
         }
-        res.json(productToDelete);
+        res.status(200).json(productToDelete);
     });
 }

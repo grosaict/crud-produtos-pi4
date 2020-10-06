@@ -27,7 +27,7 @@ exports.tokenGenerator = (req, res, next) => {
                 res.status(500).send(err);
             }
             if(!user){
-                res.status(401).send("Usuario ou senha inválidos");
+                res.status(401).send({"message" : "Usuario ou senha inválidos"});
             }else{
                 const checked = bcrypt.compareSync(pwd, user.pwd);
                 if(checked){
@@ -37,25 +37,25 @@ exports.tokenGenerator = (req, res, next) => {
                     res.status(201).send({"token":token});
                 }
                 else {
-                    res.status(401).send("Usuario ou senha inválidos");
+                    res.status(401).send({"message" : "Usuario ou senha inválidos"});
                 }
             }
         });
     }
     else{
-        res.status(400).send("Usuario ou senha não informados");
+        res.status(400).send({"message" : "Usuario ou senha não informados"});
     }
 }
 
 exports.tokenCheck = (req, res, next) => {
     const token = req.get("x-auth-token");
     if(!token) {
-        res.status(401).send("Token de acesso inexistente");
+        res.status(401).send({"message" : "Token de acesso inexistente"});
     }
     else {
         jwt.verify(token,'MySecretCode',(err, userId) =>{
             if(err){
-                res.status(401).send("Token de acesso inválido ou expirado");
+                res.status(401).send({"message" : "Token de acesso inválido ou expirado"});
             }
             else {
                 //console.log("Usuário autorizado: " + JSON.stringify(userId));

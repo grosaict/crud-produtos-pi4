@@ -6,9 +6,9 @@ const router = express.Router() //creates const for use function Router()
 const controller = require('../controllers/cart_controller')
 
 router.get      ('/',       controller.list)
-router.get      ('/:id',    controller.getByCustomer)
+router.get      ('/:id',    controller.getByCustomer) // :id of user
 //router.post     ('/',     controller.insert)
-router.put      ('/',       controller.update)
-router.delete   ('/',       controller.delete)
+router.put      ('/:id',    controller.update) // :id of user
+router.delete   ('/:id',    controller.delete)
 
 module.exports = router //export router for use in other .js

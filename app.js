@@ -34,7 +34,7 @@ app.use((req, resp, next) => {
 });
 
 app.use('/api/auth',    tokenRoute) //creates a route base for token
-app.use('/api/product', /* tokenController.tokenCheck,  */productRoute) //creates a route base for product
+app.use('/api/product', tokenController.tokenCheck, productRoute) //creates a route base for product
 app.use('/api/user',    /* tokenController.tokenCheck,  */userRoute) //creates a route base for user
 app.use('/api/cart',    /* tokenController.tokenCheck,  */cartRoute) //creates a route base for cart
 

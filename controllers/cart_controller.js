@@ -8,7 +8,7 @@ exports.list = (req, res) => {
         if(err){
             res.status(500).send(err);
         }
-        res.json(Cart);
+        res.status(200).json(Cart);
     });
 }
 
@@ -40,14 +40,15 @@ exports.update = (req, res) => {
                     }
                     if(!cartFound){ // If not exist, insert a new one
                         let newCart = new Cart();
-                        newCart.customerId = userId;
-                        newCart = updateItems(items, newCart);
+                        newCart.customerId = userId
+                        newCart = updateItems(items, newCart)
                         console.log(JSON.stringify(newCart))
-                        newCart.save((errSave, cartSaved) => {
+                        newCart.save((errSave, savedCart) => {
                             if(errSave) {
                                 res.status(500).send(errSave);
                             }
-                            res.status(201).json(cartSaved);
+                            console.log(JSON.stringify(newCart))
+                            res.status(201).json(savedCart);
                         });
                     }else{
                         let cartToUpdate = new Cart();
@@ -65,32 +66,30 @@ exports.update = (req, res) => {
     }
 }
 
-updateItems = (items, cartToUpdate) => {
+updateItems = (items, cart) => {
     try {
-        cartToUpdate.amount = 0;
-        cartToUpdate.items = [];
+        cart.amount = 0;
+        cart.items = [];
         items.forEach(item => {
-
             // ###### IS NOT WORKING WELL ######
             Product.findOne({ _id: item._id }, (errProduct, product) => {
                 if (product){ // if product found
-                    console.log(JSON.stringify(product))
+                    //console.log(JSON.stringify(product))
                     item.name   = product.name;
                     item.price  = product.price;
-                    //console.log(item)
-                    console.log(cartToUpdate.items)
-                    cartToUpdate.items.push(item);
-                    cartToUpdate.amount += (item.price * item.qtd) - item.discount;
+                    cart.items.push(item);
+                    //console.log(cart.items)
+                    cart.amount += (item.price * item.qtd) - item.discount;
                     // item.product.price is not working
                 }
             })
         })
-        console.log(JSON.stringify(cartToUpdate))
-        return cartToUpdate;
+        console.log(JSON.stringify(cart))
+        return cart;
     } catch (err){
         console.log(err);
     }
-}
+};
 
 exports.delete = (req, res) => {
     let id = req.params.id;

@@ -4,6 +4,7 @@ const Schema = mongoose.Schema;
 mongoose.Promise = global.Promise;
 
 const ProductSchema = new Schema({
+    _id:    Schema.Types.ObjectId,
     name:   String,
     price:  Number
 }, {

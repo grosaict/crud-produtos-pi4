@@ -1,5 +1,5 @@
 const Cart      = require('../models/cart')
-const ItemsCart = require('../models/itemsCart')
+//const ItemsCart = require('../models/itemsCart')
 const User      = require('../models/user')
 const Product   = require('../models/product')
 
@@ -29,7 +29,7 @@ exports.update = (req, res) => {
     if (!(userId && items)){
         res.status(400).send({"message" : "Requisição inválida"});
     }else{
-        User.find({ _id: userId }, (errUser, user) => {
+        User.findById({ _id: userId }, (errUser, user) => {
             if(errUser){
                 errUser.teamMsg = "Usuário não encontrado";
                 res.status(500).send(errUser);
@@ -38,16 +38,16 @@ exports.update = (req, res) => {
                     if(errFound) {
                         res.status(500).send(errFound);
                     }
-                    if(!cartFound){ // If not exist, insert a new one
+                    if (!cartFound) { // If not exist, insert a new one
                         let newCart = new Cart();
                         newCart.customerId = userId
                         newCart = updateItems(items, newCart)
-                        console.log(JSON.stringify(newCart))
+                        //console.log(JSON.stringify(newCart))
                         newCart.save((errSave, savedCart) => {
                             if(errSave) {
                                 res.status(500).send(errSave);
                             }
-                            console.log(JSON.stringify(newCart))
+                            //console.log(JSON.stringify(newCart))
                             res.status(201).json(savedCart);
                         });
                     }else{
@@ -66,20 +66,21 @@ exports.update = (req, res) => {
     }
 }
 
-updateItems = (items, cart) => {
+updateItems = async (items, cart) => {
     try {
         cart.amount = 0;
         cart.items = [];
-        items.forEach(item => {
-            // ###### IS NOT WORKING WELL ######
-            Product.findOne({ _id: item._id }, (errProduct, product) => {
+        await items.forEach(item => {
+            // ###### IS NOT WORKING ######
+            //Product.findById({ _id: item._id }).populate('product')
+            Product.findById({ _id: item._id }, (errProduct, product) => {
                 if (product){ // if product found
                     //console.log(JSON.stringify(product))
                     item.name   = product.name;
                     item.price  = product.price;
                     cart.items.push(item);
-                    //console.log(cart.items)
-                    cart.amount += (item.price * item.qtd) - item.discount;
+                    cart.amount += (item.price - item.discount) * item.qtd;
+                    console.log(JSON.stringify(cart))
                     // item.product.price is not working
                 }
             })

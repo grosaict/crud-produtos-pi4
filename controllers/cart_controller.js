@@ -34,17 +34,19 @@ exports.update = (req, res) => {
                 errUser.teamMsg = "Usuário não encontrado";
                 res.status(500).send(errUser);
             } else {
-                Cart.findOne({customerId: userId}, (errFound, cartFound) => {
+                Cart.findOne({customerId: userId}, async (errFound, cartFound) => {
                     if(errFound) {
                         res.status(500).send(errFound);
                     }
                     if (!cartFound) { // If not exist, insert a new one
                         let newCart = new Cart();
                         newCart.customerId = userId
-                        newCart = updateItems(items, newCart)
-                        //console.log(JSON.stringify(newCart))
+                        console.log(newCart)
+                        newCart = await updateItems(items, newCart)
+                        //console.log(newCart)
                         newCart.save((errSave, savedCart) => {
                             if(errSave) {
+                                console.log(errSave)
                                 res.status(500).send(errSave);
                             }
                             //console.log(JSON.stringify(newCart))
@@ -52,7 +54,7 @@ exports.update = (req, res) => {
                         });
                     }else{
                         let cartToUpdate = new Cart();
-                        cartToUpdate = updateItems(items, cartFound);
+                        cartToUpdate = await updateItems(items, cartFound);
                         Cart.findOneAndUpdate({ customerId: userId }, cartToUpdate, { new: true }, (errUpdate, cartUpdated) => {
                             if(errUpdate){
                                 res.status(500).send(errUpdate);
@@ -70,22 +72,18 @@ updateItems = async (items, cart) => {
     try {
         cart.amount = 0;
         cart.items = [];
-        await items.forEach(item => {
-            // ###### IS NOT WORKING ######
+        for(const item of items) {
             //Product.findById({ _id: item._id }).populate('product')
-            Product.findById({ _id: item._id }, (errProduct, product) => {
-                if (product){ // if product found
-                    //console.log(JSON.stringify(product))
-                    item.name   = product.name;
-                    item.price  = product.price;
-                    cart.items.push(item);
-                    cart.amount += (item.price - item.discount) * item.qtd;
-                    console.log(JSON.stringify(cart))
-                    // item.product.price is not working
-                }
-            })
-        })
-        console.log(JSON.stringify(cart))
+            let product = await Product.findById({ _id: item._id });
+            if (product){ // if product found
+                item.name   = product.name;
+                item.price  = product.price;
+                cart.items.push(item);
+                cart.amount += (item.price - item.discount) * item.qtd;
+                // item.product.price is not working
+            }
+        }
+        //console.log(JSON.stringify(cart))
         return cart;
     } catch (err){
         console.log(err);

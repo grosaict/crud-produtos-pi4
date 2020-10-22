@@ -6,7 +6,7 @@ const Schema    = mongoose.Schema;
 mongoose.Promise = global.Promise;
 
 const CartSchema = new Schema({
-    _id:        Schema.Types.ObjectId,
+    //_id:        Schema.Types.ObjectId,
     customerId: String,
     amount:     Number,
     items:      [{

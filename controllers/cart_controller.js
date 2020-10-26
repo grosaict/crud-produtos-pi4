@@ -40,16 +40,12 @@ exports.update = (req, res) => {
                     }
                     if (!cartFound) { // If not exist, insert a new one
                         let newCart = new Cart();
-                        newCart.customerId = userId
-                        console.log(newCart)
-                        newCart = await updateItems(items, newCart)
-                        //console.log(newCart)
+                        newCart.customerId = userId;
+                        newCart = await updateItems(items, newCart);
                         newCart.save((errSave, savedCart) => {
                             if(errSave) {
-                                console.log(errSave)
                                 res.status(500).send(errSave);
                             }
-                            //console.log(JSON.stringify(newCart))
                             res.status(201).json(savedCart);
                         });
                     }else{
@@ -73,17 +69,14 @@ updateItems = async (items, cart) => {
         cart.amount = 0;
         cart.items = [];
         for(const item of items) {
-            //Product.findById({ _id: item._id }).populate('product')
             let product = await Product.findById({ _id: item._id });
             if (product){ // if product found
                 item.name   = product.name;
                 item.price  = product.price;
                 cart.items.push(item);
                 cart.amount += (item.price - item.discount) * item.qtd;
-                // item.product.price is not working
             }
         }
-        //console.log(JSON.stringify(cart))
         return cart;
     } catch (err){
         console.log(err);

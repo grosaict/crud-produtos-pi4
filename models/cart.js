@@ -6,11 +6,9 @@ const Schema    = mongoose.Schema;
 mongoose.Promise = global.Promise;
 
 const CartSchema = new Schema({
-    //_id:        Schema.Types.ObjectId,
     customerId: String,
     amount:     Number,
     items:      [{
-                //product:    Product, // como utilizar essa model aqui??
                 _id:        { type: Schema.Types.ObjectId, ref: 'Product' },
                 name:       String,
                 price:      Number,

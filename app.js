@@ -1,4 +1,5 @@
 const express = require('express') //import express
+const cors = require('cors')  //import cors
 const app = express() //creates const for use express
 const mongoose = require('mongoose') //import mongoose
 const port = 3000 //define application port
@@ -12,6 +13,7 @@ const tokenController = require('./controllers/token_controller') //import user 
 
 app.use(express.json()) // for parsing application/json
 app.use(express.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
+app.use(cors())
 
 //Mongoose Configuration
 mongoose.connect('mongodb://localhost/app_products', { //Use data base name at this line
@@ -34,7 +36,7 @@ app.use((req, resp, next) => {
 });
 
 app.use('/api/auth',    tokenRoute) //creates a route base for token
-app.use('/api/product', tokenController.tokenCheck, productRoute) //creates a route base for product
+app.use('/api/product', /* tokenController.tokenCheck,  */productRoute) //creates a route base for product
 app.use('/api/user',    /* tokenController.tokenCheck,  */userRoute) //creates a route base for user
 app.use('/api/cart',    /* tokenController.tokenCheck,  */cartRoute) //creates a route base for cart
 
